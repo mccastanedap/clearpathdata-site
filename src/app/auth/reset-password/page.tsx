@@ -9,17 +9,38 @@ export default function ResetPasswordPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [ready, setReady] = useState(false);
+  const [verifying, setVerifying] = useState(true);
 
   useEffect(() => {
-    const { data: listener } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "PASSWORD_RECOVERY") setReady(true);
-    });
+    async function verifyToken() {
+      const params = new URLSearchParams(window.location.search);
+      const token_hash = params.get("token_hash");
+      const type = params.get("type") as "recovery" | null;
 
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) setReady(true);
-    });
+      if (token_hash && type) {
+        const { error } = await supabase.auth.verifyOtp({ token_hash, type });
+        if (error) {
+          setError("This reset link has expired or is invalid. Please request a new one.");
+        } else {
+          setReady(true);
+        }
+      } else {
+        const { data } = await supabase.auth.getSession();
+        if (data.session) {
+          setReady(true);
+        } else {
+          const { data: listener } = supabase.auth.onAuthStateChange((event) => {
+            if (event === "PASSWORD_RECOVERY") {
+              setReady(true);
+              listener.subscription.unsubscribe();
+            }
+          });
+        }
+      }
+      setVerifying(false);
+    }
 
-    return () => listener.subscription.unsubscribe();
+    verifyToken();
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -63,9 +84,20 @@ export default function ResetPasswordPage() {
             Enter your new password below
           </p>
 
-          {!ready ? (
+          {verifying && (
             <p className="mt-8 text-center text-sm text-neutral-400">Verifying your link…</p>
-          ) : (
+          )}
+
+          {!verifying && !ready && error && (
+            <div className="mt-8 text-center space-y-3">
+              <p className="text-sm text-red-500">{error}</p>
+              <a href="/login" className="text-sm text-[#64b8c0] hover:underline">
+                Back to login
+              </a>
+            </div>
+          )}
+
+          {!verifying && ready && (
             <form onSubmit={handleSubmit} className="mt-8 space-y-5">
               <div>
                 <label className="block text-sm font-medium text-neutral-700 mb-1.5">New password</label>
