@@ -38,7 +38,7 @@ export default function ConfirmPage() {
       setError("Something went wrong. Please try again.");
       setLoading(false);
     } else {
-      window.location.href = "https://clearpath-retail.streamlit.app";
+      window.location.href = "https://app.clearpathdata.org";
     }
   }
 

@@ -29,7 +29,7 @@ export default function LoginPage() {
       setError("Invalid email or password. Please try again.");
       setLoading(false);
     } else {
-      window.location.href = "https://clearpath-retail.streamlit.app";
+      window.location.href = "https://app.clearpathdata.org";
     }
   }
 
