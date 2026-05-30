@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import MobileNav from "@/components/MobileNav";
+import AuthRedirectHandler from "@/components/AuthRedirectHandler";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -79,6 +80,8 @@ export default function RootLayout({
             <MobileNav />
           </div>
         </header>
+
+        <AuthRedirectHandler />
 
         {/* CONTENT */}
         <main>{children}</main>
