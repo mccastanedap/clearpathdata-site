@@ -52,7 +52,7 @@ function TypewriterText({ text }: { text: string }) {
       i++;
       setDisplayed(text.slice(0, i));
       if (i >= text.length) clearInterval(interval);
-    }, 26);
+    }, 40);
     return () => clearInterval(interval);
   }, [text]);
 
@@ -96,8 +96,8 @@ export default function InsightsFeed({ light = false }: { light?: boolean }) {
         setTyping(false);
         setQueue((prev) => [next, ...prev].slice(0, MAX_VISIBLE));
         setNextIndex((n) => n + 1);
-      }, 1400);
-    }, 2800);
+      }, 2000);
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, [nextIndex]);
