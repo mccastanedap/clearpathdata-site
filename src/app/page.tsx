@@ -395,6 +395,12 @@ export default function Home() {
             <p className="mt-4 text-sm text-neutral-500">
               Response time: Typically within 12–24 hours
             </p>
+            <p className="mt-1 text-sm text-neutral-500">
+              Or email us directly at{" "}
+              <a href="mailto:clearpathdata@gmail.com" className="text-[#64b8c0] hover:underline font-medium">
+                clearpathdata@gmail.com
+              </a>
+            </p>
             <ContactForm />
           </Reveal>
         </div>
