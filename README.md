@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Clearpath — Sitio web público
 
-## Getting Started
+Sitio web público de **Clearpath**, un producto de analítica que convierte CSVs de ventas en insights de negocio accionables mediante inteligencia artificial. Este repositorio contiene el frontend de marketing y presentación: la landing page, el formulario de contacto y las pantallas de autenticación de acceso al producto.
 
-First, run the development server:
+El sitio está construido con Next.js y desplegado en Vercel.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Arquitectura del proyecto
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Clearpath se organiza en **dos repositorios independientes**, separados por responsabilidades:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Repositorio | Responsabilidad | Enlace |
+|-------------|-----------------|--------|
+| **clearpath-site** (este repo) | Sitio web público: presentación, marketing, captación de leads y autenticación de usuarios. | — |
+| **clearpath** | Pipeline de datos: el sistema serverless que ingiere los CSVs, los transforma y genera los insights con IA. | [github.com/mccastanedap/clearpath](https://github.com/mccastanedap/clearpath) |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Esta separación mantiene desacoplada la capa de **presentación** (este repositorio) del **sistema de datos** que la alimenta. El repositorio del pipeline implementa la lógica de negocio sobre una arquitectura serverless basada en **AWS Lambda**, **dbt** para la transformación de datos, la **API de Claude** para la generación de insights con IA y **Supabase** como capa de datos y autenticación.
 
-## Learn More
+> El procesamiento de datos, los modelos de transformación y la generación de insights viven en el repositorio del pipeline: **https://github.com/mccastanedap/clearpath**
 
-To learn more about Next.js, take a look at the following resources:
+## Stack técnico
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **[Next.js 16](https://nextjs.org/)** (App Router) — framework de React para producción.
+- **[React 19](https://react.dev/)** con el React Compiler habilitado.
+- **[TypeScript](https://www.typescriptlang.org/)** — tipado estático en todo el proyecto.
+- **[Tailwind CSS 4](https://tailwindcss.com/)** — estilos utilitarios.
+- **[Framer Motion](https://www.framer.com/motion/)** — animaciones e interacciones.
+- **[Supabase](https://supabase.com/)** — autenticación y acceso a datos (`@supabase/supabase-js`).
+- **[SendGrid](https://sendgrid.com/)** — envío de correos del formulario de contacto (`@sendgrid/mail`).
+- **[Vercel](https://vercel.com/)** — hosting y despliegue continuo.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Desarrollo local
 
-## Deploy on Vercel
+Requisitos previos: [Node.js](https://nodejs.org/) 20 o superior y npm.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Clona el repositorio e instala las dependencias:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```bash
+   npm install
+   ```
+
+2. Crea un archivo `.env.local` en la raíz con las variables de entorno necesarias:
+
+   ```bash
+   # Supabase
+   NEXT_PUBLIC_SUPABASE_URL=...
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+
+   # SendGrid (formulario de contacto)
+   SENDGRID_API_KEY=...
+   ```
+
+3. Levanta el servidor de desarrollo:
+
+   ```bash
+   npm run dev
+   ```
+
+   El sitio quedará disponible en [http://localhost:3000](http://localhost:3000).
+
+### Otros comandos
+
+| Comando | Descripción |
+|---------|-------------|
+| `npm run dev` | Inicia el servidor de desarrollo. |
+| `npm run build` | Genera la build de producción. |
+| `npm run start` | Sirve la build de producción localmente. |
+| `npm run lint` | Ejecuta ESLint. |
+
+## Despliegue
+
+El sitio se despliega automáticamente en **Vercel** a partir de la rama `main`. Cada push genera un despliegue, y las pull requests obtienen un preview deploy.
