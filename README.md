@@ -10,7 +10,7 @@ Clearpath se organiza en **dos repositorios independientes**, separados por resp
 
 | Repositorio | Responsabilidad | Enlace |
 |-------------|-----------------|--------|
-| **clearpath-site** (este repo) | Sitio web público: presentación, marketing, captación de leads y autenticación de usuarios. | — |
+| **clearpath-site** (este repo) | Sitio web público: presentación, marketing, captación de leads y autenticación de usuarios. | [github.com/mccastanedap/clearpath-site]
 | **clearpath** | Pipeline de datos: el sistema serverless que ingiere los CSVs, los transforma y genera los insights con IA. | [github.com/mccastanedap/clearpath](https://github.com/mccastanedap/clearpath) |
 
 Esta separación mantiene desacoplada la capa de **presentación** (este repositorio) del **sistema de datos** que la alimenta. El repositorio del pipeline implementa la lógica de negocio sobre una arquitectura serverless basada en **AWS Lambda**, **dbt** para la transformación de datos, la **API de Claude** para la generación de insights con IA y **Supabase** como capa de datos y autenticación.
