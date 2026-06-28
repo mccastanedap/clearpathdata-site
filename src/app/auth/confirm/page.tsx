@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 
 export default function ConfirmPage() {
+  const [businessName, setBusinessName] = useState("");
+  const [businessType, setBusinessType] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState("");
@@ -49,12 +51,19 @@ export default function ConfirmPage() {
     e.preventDefault();
     setError("");
 
+    if (!businessName.trim() || !businessType.trim()) {
+      setError("Please complete your business name and business type.");
+      return;
+    }
     if (!password) { setError("Please enter a password."); return; }
     if (password.length < 8) { setError("Password must be at least 8 characters."); return; }
     if (password !== confirm) { setError("Passwords do not match."); return; }
 
     setLoading(true);
-    const { error } = await supabase.auth.updateUser({ password });
+    const { error } = await supabase.auth.updateUser({
+      password,
+      data: { business_name: businessName, business_type: businessType }
+    });
 
     if (error) {
       setError("Something went wrong. Please try again.");
@@ -101,6 +110,28 @@ export default function ConfirmPage() {
 
           {!verifying && ready && (
             <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+              <div>
+                <label className="block text-sm font-medium text-neutral-700 mb-1.5">Business name</label>
+                <input
+                  type="text"
+                  required
+                  value={businessName}
+                  onChange={(e) => setBusinessName(e.target.value)}
+                  placeholder="Your company name"
+                  className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm text-neutral-900 placeholder-neutral-400 outline-none focus:border-[#64b8c0] focus:ring-2 focus:ring-[#64b8c0]/20 transition"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-neutral-700 mb-1.5">Business type</label>
+                <input
+                  type="text"
+                  required
+                  value={businessType}
+                  onChange={(e) => setBusinessType(e.target.value)}
+                  placeholder="e.g. Juice bar, Restaurant, Retail store"
+                  className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm text-neutral-900 placeholder-neutral-400 outline-none focus:border-[#64b8c0] focus:ring-2 focus:ring-[#64b8c0]/20 transition"
+                />
+              </div>
               <div>
                 <label className="block text-sm font-medium text-neutral-700 mb-1.5">New password</label>
                 <input
