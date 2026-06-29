@@ -8,31 +8,22 @@ export default function ResetPasswordPage() {
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [ready, setReady] = useState(false);
+  const [expired, setExpired] = useState(false);
 
   useEffect(() => {
-    const { data: listener } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "PASSWORD_RECOVERY") setReady(true);
-    });
-
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) setReady(true);
-    });
-
-    return () => listener.subscription.unsubscribe();
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("error") === "expired") setExpired(true);
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-
     if (!password) { setError("Please enter a new password."); return; }
     if (password.length < 8) { setError("Password must be at least 8 characters."); return; }
     if (password !== confirm) { setError("Passwords do not match."); return; }
 
     setLoading(true);
     const { error } = await supabase.auth.updateUser({ password });
-
     if (error) {
       setError("Something went wrong. Please try again.");
       setLoading(false);
@@ -45,7 +36,6 @@ export default function ResetPasswordPage() {
     <div className="min-h-screen bg-[#f0f7f8] flex items-center justify-center px-5">
       <div className="w-full max-w-md">
 
-        {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
           <img src="/logo.svg" alt="Clearpath Data" className="h-10 w-auto" />
           <div className="leading-[1.2]">
@@ -63,14 +53,22 @@ export default function ResetPasswordPage() {
             Enter your new password below
           </p>
 
-          {!ready ? (
-            <p className="mt-8 text-center text-sm text-neutral-400">Verifying your link…</p>
+          {expired ? (
+            <div className="mt-8 text-center space-y-3">
+              <p className="text-sm text-red-500">
+                This reset link has expired or was already used. Please request a new one.
+              </p>
+              <a href="/auth/forgot-password" className="text-sm text-[#64b8c0] hover:underline">
+                Request a new link
+              </a>
+            </div>
           ) : (
             <form onSubmit={handleSubmit} className="mt-8 space-y-5">
               <div>
                 <label className="block text-sm font-medium text-neutral-700 mb-1.5">New password</label>
                 <input
                   type="password"
+                  autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="At least 8 characters"
@@ -81,6 +79,7 @@ export default function ResetPasswordPage() {
                 <label className="block text-sm font-medium text-neutral-700 mb-1.5">Confirm password</label>
                 <input
                   type="password"
+                  autoComplete="new-password"
                   value={confirm}
                   onChange={(e) => setConfirm(e.target.value)}
                   placeholder="Repeat your password"
