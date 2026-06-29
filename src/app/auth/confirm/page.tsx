@@ -15,33 +15,43 @@ export default function ConfirmPage() {
 
   useEffect(() => {
     async function verifyToken() {
-      const params = new URLSearchParams(window.location.search);
-      const token_hash = params.get("token_hash");
-      const type = params.get("type") as "invite" | "recovery" | null;
-
-      if (token_hash && type) {
-        // PKCE flow: exchange token for session
-        const { error } = await supabase.auth.verifyOtp({ token_hash, type });
-        if (error) {
-          setError("This invitation link has expired or is invalid. Please contact Clearpath.");
-        } else {
-          setReady(true);
+      try {
+        // Link vencido o ya usado: llega como #error=... en el hash
+        const hash = new URLSearchParams(window.location.hash.slice(1));
+        if (hash.get("error")) {
+          setError("Este enlace de invitación expiró o ya fue usado. Pide uno nuevo a Clearpath.");
+          return;
         }
-      } else {
-        // Fallback: hash-based flow (older Supabase)
+
+        const params = new URLSearchParams(window.location.search);
+        const token_hash = params.get("token_hash");
+        const type = params.get("type") as "invite" | "recovery" | null;
+
+        if (token_hash && type) {
+          const { error } = await supabase.auth.verifyOtp({ token_hash, type });
+          if (error) {
+            console.error("verifyOtp error:", error);
+            setError("No pudimos validar tu invitación: " + error.message);
+          } else {
+            setReady(true);
+          }
+          return;
+        }
+
+        // Fallback: sesión por hash (flujo viejo)
         const { data } = await supabase.auth.getSession();
         if (data.session) {
           setReady(true);
-        } else {
-          const { data: listener } = supabase.auth.onAuthStateChange((event) => {
-            if (event === "SIGNED_IN" || event === "PASSWORD_RECOVERY") {
-              setReady(true);
-              listener.subscription.unsubscribe();
-            }
-          });
+          return;
         }
+
+        setError("Enlace inválido. Abre el correo más reciente y haz un solo clic en el enlace.");
+      } catch (e) {
+        console.error("verifyToken threw:", e);
+        setError("Algo falló validando tu invitación. Revisa tu conexión e intenta de nuevo.");
+      } finally {
+        setVerifying(false);
       }
-      setVerifying(false);
     }
 
     verifyToken();
