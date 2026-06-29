@@ -3,58 +3,18 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 
-export default function ConfirmPage() {
+export default function SetPasswordPage() {
   const [businessName, setBusinessName] = useState("");
   const [businessType, setBusinessType] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [ready, setReady] = useState(false);
-  const [verifying, setVerifying] = useState(true);
+  const [expired, setExpired] = useState(false);
 
   useEffect(() => {
-    async function verifyToken() {
-      try {
-        // Link vencido o ya usado: llega como #error=... en el hash
-        const hash = new URLSearchParams(window.location.hash.slice(1));
-        if (hash.get("error")) {
-          setError("Este enlace de invitación expiró o ya fue usado. Pide uno nuevo a Clearpath.");
-          return;
-        }
-
-        const params = new URLSearchParams(window.location.search);
-        const token_hash = params.get("token_hash");
-        const type = params.get("type") as "invite" | "recovery" | null;
-
-        if (token_hash && type) {
-          const { error } = await supabase.auth.verifyOtp({ token_hash, type });
-          if (error) {
-            console.error("verifyOtp error:", error);
-            setError("No pudimos validar tu invitación: " + error.message);
-          } else {
-            setReady(true);
-          }
-          return;
-        }
-
-        // Fallback: sesión por hash (flujo viejo)
-        const { data } = await supabase.auth.getSession();
-        if (data.session) {
-          setReady(true);
-          return;
-        }
-
-        setError("Enlace inválido. Abre el correo más reciente y haz un solo clic en el enlace.");
-      } catch (e) {
-        console.error("verifyToken threw:", e);
-        setError("Algo falló validando tu invitación. Revisa tu conexión e intenta de nuevo.");
-      } finally {
-        setVerifying(false);
-      }
-    }
-
-    verifyToken();
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("error") === "expired") setExpired(true);
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -87,7 +47,6 @@ export default function ConfirmPage() {
     <div className="min-h-screen bg-[#f0f7f8] flex items-center justify-center px-5">
       <div className="w-full max-w-md">
 
-        {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
           <img src="/logo.svg" alt="Clearpath Data" className="h-10 w-auto" />
           <div className="leading-[1.2]">
@@ -105,26 +64,23 @@ export default function ConfirmPage() {
             Create a password to access your Clearpath account
           </p>
 
-          {verifying && (
-            <p className="mt-8 text-center text-sm text-neutral-400">Verifying your invitation…</p>
-          )}
-
-          {!verifying && !ready && error && (
+          {expired ? (
             <div className="mt-8 text-center space-y-3">
-              <p className="text-sm text-red-500">{error}</p>
+              <p className="text-sm text-red-500">
+                This invitation link has expired or was already used. Please ask Clearpath for a new one.
+              </p>
               <a href="/#contact" className="text-sm text-[#64b8c0] hover:underline">
                 Contact Clearpath
               </a>
             </div>
-          )}
-
-          {!verifying && ready && (
+          ) : (
             <form onSubmit={handleSubmit} className="mt-8 space-y-5">
               <div>
                 <label className="block text-sm font-medium text-neutral-700 mb-1.5">Business name</label>
                 <input
                   type="text"
                   required
+                  autoComplete="organization"
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
                   placeholder="Your company name"
@@ -133,19 +89,25 @@ export default function ConfirmPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-neutral-700 mb-1.5">Business type</label>
-                <input
-                  type="text"
+                <select
                   required
                   value={businessType}
                   onChange={(e) => setBusinessType(e.target.value)}
-                  placeholder="e.g. Juice bar, Restaurant, Retail store"
-                  className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm text-neutral-900 placeholder-neutral-400 outline-none focus:border-[#64b8c0] focus:ring-2 focus:ring-[#64b8c0]/20 transition"
-                />
+                  className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm text-neutral-900 outline-none focus:border-[#64b8c0] focus:ring-2 focus:ring-[#64b8c0]/20 transition"
+                >
+                  <option value="">Select your business type</option>
+                  <option value="Juice bar">Juice bar</option>
+                  <option value="Coffee shop">Coffee shop</option>
+                  <option value="Restaurant">Restaurant</option>
+                  <option value="Bakery">Bakery</option>
+                  <option value="Retail store">Retail store</option>
+                </select>
               </div>
               <div>
                 <label className="block text-sm font-medium text-neutral-700 mb-1.5">New password</label>
                 <input
                   type="password"
+                  autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="At least 8 characters"
@@ -156,6 +118,7 @@ export default function ConfirmPage() {
                 <label className="block text-sm font-medium text-neutral-700 mb-1.5">Confirm password</label>
                 <input
                   type="password"
+                  autoComplete="new-password"
                   value={confirm}
                   onChange={(e) => setConfirm(e.target.value)}
                   placeholder="Repeat your password"
