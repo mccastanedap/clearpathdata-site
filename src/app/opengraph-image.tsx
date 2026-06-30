@@ -44,7 +44,7 @@ export default function OGImage() {
             marginTop: 16,
           }}
         >
-          Inventory analytics that help retailers make smarter decisions
+          Inventory analytics for modern retailers
         </div>
 
         {/* URL */}

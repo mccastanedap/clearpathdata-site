@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     default: "Clearpath Data — Inventory Analytics for Retailers",
     template: "%s | Clearpath Data",
   },
-  description: "Clearpath Data gives retailers clear, actionable inventory insights. Stop guessing — know exactly what to reorder, when, and how much.",
+  description: "Inventory analytics for modern retailers. Clearpath Data gives you clear, actionable insights to optimize stock, reduce waste, and make smarter decisions.",
   keywords: [
     "inventory analytics",
     "retail inventory management",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     url: "https://clearpathdata.org",
     siteName: "Clearpath Data",
     title: "Clearpath Data — Inventory Analytics for Retailers",
-    description: "Clearpath Data gives retailers clear, actionable inventory insights. Stop guessing — know exactly what to reorder, when, and how much.",
+    description: "Inventory analytics for modern retailers. Clearpath Data gives you clear, actionable insights to optimize stock, reduce waste, and make smarter decisions.",
     images: [
       {
         url: "/opengraph-image",
