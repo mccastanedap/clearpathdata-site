@@ -61,16 +61,16 @@ export default function SetPasswordPage() {
         <div className="bg-white rounded-2xl shadow-sm border border-neutral-200 px-8 py-10">
           <h1 className="text-2xl font-bold text-[#112b50] text-center">Set your password</h1>
           <p className="mt-2 text-sm text-neutral-500 text-center">
-            Create a password to access your Clearpath account
+            Create a password to access your Clearpath Data account
           </p>
 
           {expired ? (
             <div className="mt-8 text-center space-y-3">
               <p className="text-sm text-red-500">
-                This invitation link has expired or was already used. Please ask Clearpath for a new one.
+                This invitation link has expired or was already used. Please ask Clearpath Data for a new one.
               </p>
               <a href="/#contact" className="text-sm text-[#64b8c0] hover:underline">
-                Contact Clearpath
+                Contact Clearpath Data
               </a>
             </div>
           ) : (

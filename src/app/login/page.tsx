@@ -79,7 +79,7 @@ export default function LoginPage() {
         <div className="bg-white rounded-2xl shadow-sm border border-neutral-200 px-8 py-10">
           <h1 className="text-2xl font-bold text-[#112b50] text-center">Client Portal</h1>
           <p className="mt-2 text-sm text-neutral-500 text-center">
-            Sign in with the credentials provided by Clearpath
+            Sign in with the credentials provided by Clearpath Data
           </p>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-5">

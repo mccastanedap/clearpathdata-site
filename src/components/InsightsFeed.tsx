@@ -119,7 +119,7 @@ export default function InsightsFeed({ light = false }: { light?: boolean }) {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#64b8c0] opacity-60" />
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#64b8c0]" />
           </span>
-          <span className={`text-xs font-semibold ${label}`}>Clearpath Insights</span>
+          <span className={`text-xs font-semibold ${label}`}>Clearpath Data Insights</span>
         </div>
         <span className="text-[10px] font-medium text-[#64b8c0] uppercase tracking-wider">Live</span>
       </div>

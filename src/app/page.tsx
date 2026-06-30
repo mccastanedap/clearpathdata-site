@@ -281,7 +281,7 @@ export default function Home() {
           <Reveal>
             <p className="text-sm font-semibold text-[#ef9f38]">Early Access</p>
             <h2 className="mt-2 text-3xl font-bold text-neutral-900">
-              Be among the first retailers to pilot Clearpath
+              Be among the first retailers to pilot Clearpath Data
             </h2>
             <p className="mt-2 text-sm text-[#112b50] italic">
               We&apos;re onboarding a limited number of retailers to validate the MVP
@@ -334,7 +334,7 @@ export default function Home() {
               Inventory problems are cash-flow problems
             </h2>
             <p className="mt-3 text-sm text-[#112b50] italic max-w-2xl">
-              Small and mid-sized retailers operate without the data infrastructure that large chains take for granted. Clearpath closes that gap — without needing an internal analytics team.
+              Small and mid-sized retailers operate without the data infrastructure that large chains take for granted. Clearpath Data closes that gap — without needing an internal analytics team.
             </p>
           </Reveal>
 
