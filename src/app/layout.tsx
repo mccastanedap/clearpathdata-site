@@ -12,8 +12,60 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Clearpath Data",
-  description: "Data-driven inventory decision infrastructure for retailers.",
+  title: {
+    default: "Clearpath Data — Inventory Analytics for Retailers",
+    template: "%s | Clearpath Data",
+  },
+  description: "Clearpath Data gives retailers clear, actionable inventory insights. Stop guessing — know exactly what to reorder, when, and how much.",
+  keywords: [
+    "inventory analytics",
+    "retail inventory management",
+    "inventory insights",
+    "retail data platform",
+    "inventory optimization",
+    "stock management software",
+    "retail analytics",
+    "inventory decision software",
+  ],
+  authors: [{ name: "Clearpath Data" }],
+  creator: "Clearpath Data",
+  metadataBase: new URL("https://clearpathdata.org"),
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://clearpathdata.org",
+    siteName: "Clearpath Data",
+    title: "Clearpath Data — Inventory Analytics for Retailers",
+    description: "Clearpath Data gives retailers clear, actionable inventory insights. Stop guessing — know exactly what to reorder, when, and how much.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Clearpath Data — Inventory Analytics for Retailers",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Clearpath Data — Inventory Analytics for Retailers",
+    description: "Clearpath Data gives retailers clear, actionable inventory insights.",
+    images: ["/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 function NavItem({
