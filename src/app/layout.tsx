@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     description: "Clearpath Data gives retailers clear, actionable inventory insights. Stop guessing — know exactly what to reorder, when, and how much.",
     images: [
       {
-        url: "/og-image.png",
+        url: "/opengraph-image",
         width: 1200,
         height: 630,
         alt: "Clearpath Data — Inventory Analytics for Retailers",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Clearpath Data — Inventory Analytics for Retailers",
     description: "Clearpath Data gives retailers clear, actionable inventory insights.",
-    images: ["/og-image.png"],
+    images: ["/opengraph-image"],
   },
   robots: {
     index: true,
