@@ -8,7 +8,7 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default function OGImage() {
-  const logoData = readFileSync(join(process.cwd(), "public/logo.png"));
+  const logoData = readFileSync(join(process.cwd(), "public/images/logo.png"));
   const logoBase64 = `data:image/png;base64,${logoData.toString("base64")}`;
 
   return new ImageResponse(

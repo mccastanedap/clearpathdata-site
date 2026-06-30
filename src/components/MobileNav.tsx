@@ -57,7 +57,7 @@ export default function MobileNav() {
         {/* Header */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 24px", borderBottom: "1px solid #f5f5f5" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <img src="/logo.svg" alt="Clearpath Data" style={{ height: 40, width: "auto", display: "block" }} />
+            <img src="/images/logo.svg" alt="Clearpath Data" style={{ height: 40, width: "auto", display: "block" }} />
             <div style={{ lineHeight: 1.2 }}>
               <div style={{ fontSize: 16, fontWeight: 600 }}>
                 <span style={{ color: "#112b50" }}>Clear</span>

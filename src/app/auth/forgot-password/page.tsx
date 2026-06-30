@@ -33,7 +33,7 @@ export default function ForgotPasswordPage() {
 
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
-          <img src="/logo.svg" alt="Clearpath Data" className="h-10 w-auto" />
+          <img src="/images/logo.svg" alt="Clearpath Data" className="h-10 w-auto" />
           <div className="leading-[1.2]">
             <div className="text-base font-semibold">
               <span className="text-[#112b50]">Clear</span>
