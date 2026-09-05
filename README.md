@@ -25,7 +25,7 @@ Esta separación mantiene desacoplada la capa de **presentación** (este reposit
 - **[Tailwind CSS 4](https://tailwindcss.com/)** — estilos utilitarios.
 - **[Framer Motion](https://www.framer.com/motion/)** — animaciones e interacciones.
 - **[Supabase](https://supabase.com/)** — autenticación y acceso a datos (`@supabase/supabase-js`).
-- **[SendGrid](https://sendgrid.com/)** — envío de correos del formulario de contacto (`@sendgrid/mail`).
+- **[Resend](https://resend.com/)** — envío de correos del formulario de contacto (`resend`).
 - **[Vercel](https://vercel.com/)** — hosting y despliegue continuo.
 
 ## Desarrollo local
@@ -45,8 +45,10 @@ Requisitos previos: [Node.js](https://nodejs.org/) 20 o superior y npm.
    NEXT_PUBLIC_SUPABASE_URL=...
    NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 
-   # SendGrid (formulario de contacto)
-   SENDGRID_API_KEY=...
+   # Resend (formulario de contacto)
+   RESEND_API_KEY=...
+   RESEND_FROM_EMAIL=contact@clearpathdata.org
+   RESEND_TO_EMAIL=contact@clearpathdata.org
    ```
 
 3. Levanta el servidor de desarrollo:
