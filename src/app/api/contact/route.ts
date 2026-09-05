@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import sgMail from "@sendgrid/mail";
+import { Resend } from "resend";
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: NextRequest) {
   const { name, email, message } = await req.json();
@@ -11,9 +11,9 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    await sgMail.send({
-      from: process.env.SENDGRID_FROM_EMAIL!,
-      to: process.env.SENDGRID_TO_EMAIL!,
+    await resend.emails.send({
+      from: `Clearpath Data <${process.env.RESEND_FROM_EMAIL}>`,
+      to: process.env.RESEND_TO_EMAIL!,
       replyTo: email,
       subject: `New message from ${name} — Clearpath Data`,
       html: `
@@ -28,8 +28,7 @@ export async function POST(req: NextRequest) {
     });
     return NextResponse.json({ ok: true });
   } catch (err: any) {
-    const message = err?.response?.body ?? err?.message ?? err;
-    console.error("SendGrid error:", JSON.stringify(message, null, 2));
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error("Resend error:", err);
+    return NextResponse.json({ error: err?.message ?? err }, { status: 500 });
   }
 }
